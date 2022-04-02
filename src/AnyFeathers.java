@@ -34,6 +34,7 @@ public class AnyFeathers  extends Script {
 
         Item coins = getInventory().getItem("Coins");
         Item packs = getInventory().getItem("Feather pack");
+        Item featherpack = getInventory().getItem("Feather pack");
         NPC gerrant = getNpcs().closest("Gerrant");
         RS2Widget shop = getWidgets().get(300, 16, 9);
 
@@ -48,7 +49,7 @@ public class AnyFeathers  extends Script {
         {
             if( !myPlayer().getArea(5).contains( new Position(3164, 3485, 0)) && coins.getAmount() <= 200)
             {
-                Item featherpack = getInventory().getItem("Feather pack");
+
 
                 if(featherpack != null)
                     featherpack.interact("Open");
@@ -142,43 +143,6 @@ public class AnyFeathers  extends Script {
 
 
         }
-
-
-
-
-
-//        if(worlds.getCurrentWorld() != 382) {
-//            getWorlds().hop(382);
-//
-//            Sleep.until(() -> worlds.getCurrentWorld() == 382, 5000);
-//        }
-
-
-
-
-
-//    if( coins != null && coins.getAmount() - 500000 > 0) {
-//        if(trader.trade("lilibaggins"))
-//        {
-//            if(trader.offerItem(coins, coins.getAmount() - 500000))
-//            {
-//                wait(5000);
-//                if(trader.acceptTrade(true)) {
-//                    log("trade complete");
-//                    this.stop(true);
-//                }
-//            }
-//        }
-//    }
-
-
-
-
-
-
-
-
-
         return 1000;
     }
 }
