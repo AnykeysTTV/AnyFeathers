@@ -45,9 +45,15 @@ public class AnyFeathers  extends Script {
         if(coins == null)
             stop(true);
 
+        if(coins.getAmount() > 200)
+            state = 1;
+        else
+            state = 0;
+
+
         if(state == 0 ) // at GE
         {
-            if( !myPlayer().getArea(5).contains( new Position(3164, 3485, 0)) && coins.getAmount() <= 200)
+            if( !myPlayer().getArea(5).contains( new Position(3164, 3485, 0)))
             {
 
 
@@ -64,6 +70,7 @@ public class AnyFeathers  extends Script {
 
         }else if( state == 1) // at Shop
         {
+
 
 
 
@@ -103,8 +110,7 @@ public class AnyFeathers  extends Script {
 
                     Sleep.until(()-> packs == null, 20000);
                 }
-                if(!getInventory().isFull() && coins.getAmount() < 200)
-                    state = 0;
+
 
             }
         }
