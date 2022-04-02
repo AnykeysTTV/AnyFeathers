@@ -69,9 +69,14 @@ public class AnyFeathers  extends Script {
 
 
             if(shop == null) {
-                if(gerrant != null) {
+                if(gerrant != null && featherpack == null) {
                     gerrant.interact("Trade");
-                    Sleep.until(() -> !myPlayer().isMoving(), 3000);
+                    Sleep.until(() -> !myPlayer().isMoving() && packs == null, 3000);
+
+                }else {
+
+                    packs.interact("Open");
+                    Sleep.until(() -> packs == null, 15000);
                 }
                 if(!myPosition().getArea(10).contains(new Position(3013, 3223, 0)))
                     walking.webWalk(new Position(3013, 3223, 0));
