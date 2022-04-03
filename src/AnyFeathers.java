@@ -38,24 +38,22 @@ public class AnyFeathers  extends Script {
         NPC gerrant = getNpcs().closest("Gerrant");
         RS2Widget shop = getWidgets().get(300, 16, 9);
 
-        if(myPosition().getArea(10).contains(gerrant.getPosition()))
-            state = 1;
 
 
         if(coins == null)
             stop(true);
 
-        if(coins.getAmount() > 200)
+        if(coins.getAmount() > 200 && state != 1)
             state = 1;
-        else
-            state = 0;
+
+
 
 
         if(state == 0 ) // at GE
         {
+
             if( !myPlayer().getArea(5).contains( new Position(3164, 3485, 0)))
             {
-
 
                 if(featherpack != null)
                     featherpack.interact("Open");
@@ -70,48 +68,43 @@ public class AnyFeathers  extends Script {
 
         }else if( state == 1) // at Shop
         {
-
-
-
-
-
-            if(shop == null) {
+             if(shop == null) {
                 if(gerrant != null && featherpack == null) {
                     gerrant.interact("Trade");
                     Sleep.until(() -> !myPlayer().isMoving() && packs == null, 3000);
 
                 }else {
 
+                    if(packs != null)
                     packs.interact("Open");
-                    Sleep.until(() -> packs == null, 15000);
+                    Sleep.until(() -> packs == null, 5000);
                 }
                 if(!myPosition().getArea(10).contains(new Position(3013, 3223, 0)))
                     walking.webWalk(new Position(3013, 3223, 0));
 
             }else
             {
-
-
-
-                if(!inventory.isFull()  )
+                if(inventory.isFull())
                 {
-                    if( coins.getAmount() > 200) {
-                        if (shop.getItemAmount() == 100)
-                            shop.interact("Buy 10");
-                    }else
-                    if(shop.isVisible())
-                        getWidgets().get(300, 1, 11).interact("Close");
-                }else
-                {
-                    if(shop.isVisible())
+                    if(shop != null)
                         getWidgets().get(300, 1, 11).interact("Close");
 
-                    packs.interact("Open");
+                    if( packs != null )
+                        Sleep.until(() -> packs.interact("Open"), 5000);
 
-                    Sleep.until(()-> packs == null, 20000);
                 }
+                else
+                {
 
+                    if(coins.getAmount() > 200 && shop.getItemAmount() == 100)
+                        shop.interact("Buy 10");
+                    else
+                    {
+                        Sleep.until(()-> getWidgets().get(300, 1 ,11).interact("Close"), 1000);
+                        state = 0;
+                    }
 
+                }
             }
         }
         else if ( state == 2) // at ge get bank
@@ -149,11 +142,8 @@ public class AnyFeathers  extends Script {
                 if(ge.isOpen())
                     grandExchange.close();
             }
-
-
-
-
         }
+
         return 1000;
     }
 }
