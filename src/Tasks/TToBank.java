@@ -2,7 +2,10 @@ package Tasks;
 
 import nox.scripts.noxscape.util.Sleep;
 import org.osbot.rs07.api.map.Position;
+import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.script.MethodProvider;
+
+import java.util.logging.Filter;
 
 public class TToBank implements ITask{
 
@@ -20,8 +23,11 @@ public class TToBank implements ITask{
         if(_api.inventory.isFull())
             return true;
 
-        if(_api.inventory.getItem("Coins").getAmount() < 200)
+        Item coins = _api.inventory.getItem(i -> i.getName().equalsIgnoreCase("Coins"));
+
+        if(coins == null || coins.getAmount() < 200)
             return true;
+
 
         if(_bankPosition.getArea(10).contains(_api.myPosition()))
             return true;

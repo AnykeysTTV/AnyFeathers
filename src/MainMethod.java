@@ -10,7 +10,7 @@ import java.util.List;
 public class MainMethod extends Script {
 
     private final List<ITask> botTasks = new ArrayList<ITask>();
-    private static EState _state = EState.STARTUP;
+
 
     @Override
     public void onStart() throws InterruptedException {
@@ -20,14 +20,7 @@ public class MainMethod extends Script {
         botTasks.add(new TInventoryHandler(this));
     }
 
-    public static void setState(EState state)
-    {
-        _state =state;
-    }
-    public static EState getState()
-    {
-        return _state;
-    }
+
 
     @Override
     public int onLoop() throws InterruptedException {
@@ -39,6 +32,6 @@ public class MainMethod extends Script {
 
         }
 
-        return 0;
+        return 3000;
     }
 }
