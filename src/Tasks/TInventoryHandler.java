@@ -1,29 +1,28 @@
 package Tasks;
 
-import nox.scripts.noxscape.util.Sleep;
-import nox.scripts.noxscape.util.WidgetActionFilter;
-import org.osbot.rs07.api.Inventory;
+import nox.scripts.noxscape.util.CSleep;
 import org.osbot.rs07.api.model.Item;
 import org.osbot.rs07.api.ui.RS2Widget;
 import org.osbot.rs07.script.MethodProvider;
 
+import java.awt.*;
 
 
-public class TInventoryHandler implements ITask{
+public final class TInventoryHandler extends AbstractTask{
 
-    private MethodProvider _api = null;
     private Item _pack = null;
-    WidgetActionFilter _shopwindow = new WidgetActionFilter("Close");
 
     public TInventoryHandler(final MethodProvider api)
     {
-        _api = api;
+        super(api);
     }
 
     @Override
     public boolean Valid() {
 
-        _pack = _api.inventory.getItem("Feather pack");
+        _pack = inventory.getItem("Feather pack");
+
+        _pack = inventory.getItem(i -> i.getName().equalsIgnoreCase("Feather pack") && i.getAmount() > 0);
 
         if(_pack == null)
             return false;
@@ -35,15 +34,13 @@ public class TInventoryHandler implements ITask{
     @Override
     public void Execute() {
 
-        RS2Widget window = _api.getWidgets().get(300, 1, 11);
 
-        if(window != null)
-            window.interact("Close");
-
-        Sleep.until(()-> window == null, 1000, 1000);
+        if(isShopOpen())
+            new CSleep(() -> widgets.closeOpenInterface(), 500, 500).sleep();
 
         _pack.interact("Open");
-        Sleep.until(() -> _pack == null, 10000, 1000);
+        new CSleep(()-> _pack == null, 1000, 1000).sleep();
 
     }
+
 }
