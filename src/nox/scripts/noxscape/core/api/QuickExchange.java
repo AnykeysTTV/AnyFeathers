@@ -1,6 +1,6 @@
 package nox.scripts.noxscape.core.api;
 
-import nox.scripts.noxscape.util.Sleep;
+import nox.scripts.noxscape.util.CSleep;
 import nox.scripts.noxscape.util.WidgetActionFilter;
 import nox.scripts.noxscape.util.Wrapper;
 import org.osbot.rs07.api.GrandExchange;
@@ -47,7 +47,7 @@ public class QuickExchange extends MethodProvider {
             return false;
         }
 
-        Sleep.until(this::isOpen, 6000, 800);
+        CSleep.until(this::isOpen, 6000, 800);
 
         return isOpen();
     }
@@ -92,12 +92,12 @@ public class QuickExchange extends MethodProvider {
             return false;
         }
 
-        Sleep.until(() -> getGrandExchange().isBuyOfferOpen() && getWidgets().singleFilter(WIDGET_ROOT_SEARCHITEM, w -> w != null && w.getMessage() != null && w.getMessage().equals(WIDGET_TEXT_SEARCHITEM)) != null, 5000, 500);
+        CSleep.until(() -> getGrandExchange().isBuyOfferOpen() && getWidgets().singleFilter(WIDGET_ROOT_SEARCHITEM, w -> w != null && w.getMessage() != null && w.getMessage().equals(WIDGET_TEXT_SEARCHITEM)) != null, 5000, 500);
 
         getKeyboard().typeString(itemName);
 
         final Wrapper<RS2Widget> searchItemWidget = new Wrapper<>();
-        Sleep.until(() -> {
+        CSleep.until(() -> {
             searchItemWidget.set(getWidgets().singleFilter(WIDGET_ROOT_SEARCHITEM, f -> f != null && f.getMessage() != null && f.getMessage().equals(itemName)));
             return searchItemWidget.isSet();
         }, 6000, 1000);
@@ -112,7 +112,7 @@ public class QuickExchange extends MethodProvider {
             return false;
         }
 
-        Sleep.until(() -> getWidgets().singleFilter(getGrandExchange().getInterfaceId(), w -> w != null && w.getMessage() != null && w.getMessage().equals(itemName)) != null, 10000, 1000);
+        CSleep.until(() -> getWidgets().singleFilter(getGrandExchange().getInterfaceId(), w -> w != null && w.getMessage() != null && w.getMessage().equals(itemName)) != null, 10000, 1000);
 
         return finishHandlingItem(itemName, amount, true, withdrawToBank, boxToUse);
     }
@@ -149,7 +149,7 @@ public class QuickExchange extends MethodProvider {
             return false;
         }
 
-        Sleep.until(() -> getGrandExchange().isSellOfferOpen(), 2000, 400);
+        CSleep.until(() -> getGrandExchange().isSellOfferOpen(), 2000, 400);
 
         return finishHandlingItem(itemName, amount, false, true, boxToUse);
     }
@@ -185,7 +185,7 @@ public class QuickExchange extends MethodProvider {
         }
 
         GrandExchange.Status statusToWaitFor = (isBuying ? GrandExchange.Status.FINISHED_BUY : GrandExchange.Status.FINISHED_SALE);
-        Sleep.until(() -> getGrandExchange().getStatus(boxToUse) == statusToWaitFor,
+        CSleep.until(() -> getGrandExchange().getStatus(boxToUse) == statusToWaitFor,
                 10000, 1000);
 
         if (getGrandExchange().getStatus(boxToUse) == statusToWaitFor) {
